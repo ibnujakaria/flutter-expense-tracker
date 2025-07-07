@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -42,32 +44,34 @@ class _StatsPageState extends State<StatsPage> {
 
   TransactionFilters filters = const TransactionFilters();
 
-  late AppOpenAd? adOpenApp;
+  AppOpenAd? adOpenApp;
 
   /// Loads an app open ad.
   void loadAppOpenAd() {
-    AppOpenAd.load(
-        adUnitId: AdHelper.addOpenAdUnitId,
-        request: const AdRequest(),
-        adLoadCallback: AppOpenAdLoadCallback(
-          onAdLoaded: (ad) {
-            adOpenApp = ad;
-            adOpenApp!.show();
-            adOpenApp!.fullScreenContentCallback =
-                FullScreenContentCallback(
-                    onAdFailedToShowFullScreenContent: ((ad, error) {
-                      ad.dispose();
-                      adOpenApp!.dispose();
-                      debugPrint(error.message);
-                    }), onAdDismissedFullScreenContent: (ad) {
-                  ad.dispose();
-                  adOpenApp!.dispose();
-                });
-          },
-          onAdFailedToLoad: (err) {
-            debugPrint(err.message);
-          },
-        ), orientation: AppOpenAd.orientationPortrait);
+    if (Platform.isAndroid || Platform.isIOS) {
+      AppOpenAd.load(
+          adUnitId: AdHelper.addOpenAdUnitId,
+          request: const AdRequest(),
+          adLoadCallback: AppOpenAdLoadCallback(
+            onAdLoaded: (ad) {
+              adOpenApp = ad;
+              adOpenApp!.show();
+              adOpenApp!.fullScreenContentCallback =
+                  FullScreenContentCallback(
+                      onAdFailedToShowFullScreenContent: ((ad, error) {
+                        ad.dispose();
+                        adOpenApp!.dispose();
+                        debugPrint(error.message);
+                      }), onAdDismissedFullScreenContent: (ad) {
+                    ad.dispose();
+                    adOpenApp!.dispose();
+                  });
+            },
+            onAdFailedToLoad: (err) {
+              debugPrint(err.message);
+            },
+          ), orientation: AppOpenAd.orientationPortrait);
+    }
   }
 
   @override

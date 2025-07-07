@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -39,22 +41,26 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   final dateRangeService = DateRangeService();
-  late BannerAd bannerAd;
+  BannerAd? bannerAd;
 
   void initBannerAd() {
-    bannerAd = BannerAd(
-      size: AdSize.mediumRectangle,
-      adUnitId: AdHelper.bannerAdUnitId,
-      listener: BannerAdListener(
-        onAdLoaded: (ad) {},
-        onAdFailedToLoad: (ad, error) {
-          ad.dispose();
-        },
-      ),
-      request: const AdRequest(),
-    );
+    if (Platform.isAndroid || Platform.isIOS) {
+      bannerAd = BannerAd(
+        size: AdSize.mediumRectangle,
+        adUnitId: AdHelper.bannerAdUnitId,
+        listener: BannerAdListener(
+          onAdLoaded: (ad) {},
+          onAdFailedToLoad: (ad, error) {
+            ad.dispose();
+          },
+        ),
+        request: const AdRequest(),
+      );
 
-    bannerAd.load();
+      bannerAd?.load();
+    } else {
+      bannerAd = null;
+    }
   }
 
   @override
@@ -283,12 +289,14 @@ class _DashboardPageState extends State<DashboardPage> {
                               body: buildAccountList(accounts));
                         }
                       }),
-                  const SizedBox(height: 16),
-                  SizedBox(
-                    width: bannerAd.size.width.toDouble(),
-                    height: bannerAd.size.height.toDouble(),
-                    child: AdWidget(ad: bannerAd),
-                  ),
+                  if (bannerAd != null) ... [
+                    const SizedBox(height: 16),
+                    SizedBox(
+                      width: bannerAd!.size.width.toDouble(),
+                      height: bannerAd!.size.height.toDouble(),
+                      child: AdWidget(ad: bannerAd!),
+                    ),
+                  ],
                   const SizedBox(height: 16),
                   StreamBuilder(
                       stream: TransactionService.instance

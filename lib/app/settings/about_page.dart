@@ -5,7 +5,7 @@ import 'package:monekin/core/presentation/widgets/skeleton.dart';
 import 'package:monekin/core/utils/open_external_url.dart';
 import 'package:monekin/i18n/translations.g.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:slang/builder/utils/string_extensions.dart';
+import 'package:recase/recase.dart';
 
 @RoutePage()
 class AboutPage extends StatelessWidget {
@@ -69,7 +69,7 @@ class AboutPage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  snapshot.data!.appName.capitalize(),
+                                  snapshot.data!.appName.titleCase,
                                   style: Theme.of(context)
                                       .textTheme
                                       .headlineMedium,

@@ -159,7 +159,7 @@ ThemeData getThemeData(
           listTileSmallText.copyWith(fontWeight: FontWeight.w300),
       leadingAndTrailingTextStyle: listTileSmallText,
     ),
-    tabBarTheme: TabBarTheme(
+    tabBarTheme: TabBarThemeData(
         unselectedLabelColor: isDark
             ? theme.colorScheme.onPrimaryContainer
             : theme.colorScheme.onPrimary,

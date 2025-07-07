@@ -18,7 +18,7 @@ import 'package:monekin/core/services/view-actions/transaction_view_actions_serv
 import 'package:monekin/core/utils/color_utils.dart';
 import 'package:monekin/core/utils/list_tile_action_item.dart';
 import 'package:monekin/i18n/translations.g.dart';
-import 'package:slang/builder/utils/string_extensions.dart';
+import 'package:recase/recase.dart';
 import 'package:uuid/uuid.dart';
 
 class TransactionDetailAction {
@@ -363,7 +363,7 @@ class _TransactionDetailsPageState extends State<TransactionDetailsPage> {
                             .tr_status(
                                 status:
                                     transaction.status!.displayName(context))
-                            .capitalize(),
+                            .titleCase,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w700,

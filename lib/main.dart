@@ -8,10 +8,14 @@ import 'package:monekin/core/database/services/user-setting/user_setting_service
 import 'package:monekin/core/presentation/theme.dart';
 import 'package:monekin/core/routes/app_router.dart';
 import 'package:monekin/i18n/translations.g.dart';
+import 'dart:io' show Platform;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await MobileAds.instance.initialize();
+
+  if (Platform.isAndroid || Platform.isIOS) {
+    await MobileAds.instance.initialize();
+  }
 
   runApp(const MonekinAppEntryPoint());
 }
